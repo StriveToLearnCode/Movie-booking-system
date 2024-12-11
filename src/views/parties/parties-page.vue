@@ -1,0 +1,5 @@
+<template>
+  <div>parties</div>
+</template>
+<script setup></script>
+<style scoped lang="scss"></style>
