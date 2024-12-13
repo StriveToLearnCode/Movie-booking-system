@@ -48,6 +48,8 @@
 import { NInput } from "naive-ui";
 import movieCard from "@/components/movie-card.vue";
 import homeSider from "./components/home-sider.vue";
+import { ref } from "vue";
+const value = ref("");
 </script>
 <style scoped lang="scss">
 .container {

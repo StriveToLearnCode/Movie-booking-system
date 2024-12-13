@@ -2,7 +2,7 @@
   <div class="office-container">
     <div class="title">票房排名</div>
     <div class="content">
-      <div class="item">
+      <div class="item" @click="toDetail">
         <div class="index">1</div>
         <movieCard>
           <template #name>John Wick</template>
@@ -78,8 +78,12 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
 import movieCard from "@/components/movie-card.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const toDetail = () => {
+  router.push("/detail");
+};
 </script>
 <style scoped lang="scss">
 .office-container {

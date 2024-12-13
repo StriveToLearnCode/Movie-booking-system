@@ -3,7 +3,7 @@
     <div class="left">
       <n-image
         :width="width"
-        :src="imageSrc"
+        :src="props.imageSrc"
         alt="Movie Image"
         loading="lazy"
       />
@@ -29,7 +29,7 @@
 </template>
 <script setup>
 import { NImage } from "naive-ui";
-defineProps({
+const props = defineProps({
   imageSrc: {
     type: String,
     required: true,

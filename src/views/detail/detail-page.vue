@@ -1,11 +1,11 @@
 <template>
   <div class="detail-container">
     <div class="top">
-      <n-steps v-model:current="current">
+      <n-steps :current="current">
         <n-step title="选择影片场次" />
         <n-step title="选择座位" />
-        <n-step disabled title="14分钟内付款" />
-        <n-step disabled title="影票出票" />
+        <n-step title="14分钟内付款" />
+        <n-step title="影票出票" />
       </n-steps>
     </div>
     <div class="bottom">
@@ -17,10 +17,9 @@
 import { NSteps, NStep } from "naive-ui";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-const currentRef = ref(2);
-const current = currentRef;
+const current = ref(1);
 const router = useRouter();
-watch(currentRef, (val) => {
+watch(current, (val) => {
   console.log(val);
   switch (val) {
     case 1:
@@ -29,9 +28,11 @@ watch(currentRef, (val) => {
     case 2:
       router.push("/detail/seat");
       break;
-    default:
-      console.log("Unknown step value:", val);
-      // You could push to a default route or handle errors here
+    case 3:
+      router.push("/detail/pay");
+      break;
+    case 4:
+      router.push("/detail/ticket");
       break;
   }
 });
@@ -49,7 +50,6 @@ watch(currentRef, (val) => {
   }
   .bottom {
     width: 100%;
-    display: flex;
   }
 }
 </style>

@@ -17,7 +17,7 @@
           <n-anchor-link title="媒体" href="#/media" />
         </n-anchor-link>
         <n-anchor-link title="全局">
-          <n-anchor-link title="设置" href="#/setting" />
+          <n-anchor-link title="个人中心" href="#/setting" />
         </n-anchor-link>
       </n-anchor>
     </div>

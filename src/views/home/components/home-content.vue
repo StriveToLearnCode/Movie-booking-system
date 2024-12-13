@@ -7,100 +7,44 @@
     </n-tabs>
   </div>
   <div class="carousel">
-    <n-carousel autoplay centered-slides="true" show-arrow>
-      <img
-        class="carousel-img"
-        src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg"
-      />
-      <img
-        class="carousel-img"
-        src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
-      />
-      <img
-        class="carousel-img"
-        src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg"
-      />
+    <n-carousel autoplay show-arrow>
+      <img class="carousel-img" src="@/assets/swiper/swiper1.jpg" />
+      <img class="carousel-img" src="@/assets/swiper/swiper2.jpg" />
+      <img class="carousel-img" src="@/assets/swiper/swiper3.jpg" />
     </n-carousel>
   </div>
   <div>
-    <div class="subTitle">Best Artists</div>
+    <div class="subTitle">电影列表</div>
     <div class="list">
-      <n-card title="带封面的卡片">
+      <n-card
+        v-for="item in movieList"
+        :key="item.id"
+        :title="item.movie_cn_name"
+        @click="toDetail(item.id)"
+      >
         <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
+          <img :src="`/src/assets/电影/${item.movie_cn_name}.webp`" />
         </template>
-        卡片内容
-      </n-card>
-      <n-card title="带封面的卡片">
-        <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
-        </template>
-        卡片内容
-      </n-card>
-
-      <n-card title="带封面的卡片">
-        <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
-        </template>
-        卡片内容
-      </n-card>
-      <n-card title="带封面的卡片">
-        <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
-        </template>
-        卡片内容
-      </n-card>
-    </div>
-  </div>
-  <div>
-    <div class="subTitle">Best Artists</div>
-    <div class="list">
-      <n-card title="带封面的卡片">
-        <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
-        </template>
-        卡片内容
-      </n-card>
-      <n-card title="带封面的卡片">
-        <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
-        </template>
-        卡片内容
-      </n-card>
-
-      <n-card title="带封面的卡片">
-        <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
-        </template>
-        卡片内容
-      </n-card>
-      <n-card title="带封面的卡片">
-        <template #cover>
-          <img
-            src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-          />
-        </template>
-        卡片内容
       </n-card>
     </div>
   </div>
 </template>
 <script setup>
 import { NCarousel, NTabs, NTabPane, NCard } from "naive-ui";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { reqMovieList } from "@/api/movie";
+const router = useRouter();
+const movieList = ref([]);
+const toDetail = () => {
+  router.push("/detail");
+};
+const getMovieList = async () => {
+  const res = await reqMovieList();
+  movieList.value = res.data;
+  console.log(movieList.value);
+};
+getMovieList();
 </script>
 <style scoped lang="scss">
 .content {
@@ -117,7 +61,8 @@ import { NCarousel, NTabs, NTabPane, NCard } from "naive-ui";
   .list {
     margin-top: 20px;
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 13px;
     .n-card {
       max-width: 200px;
     }

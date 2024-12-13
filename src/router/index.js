@@ -13,6 +13,8 @@ import communityPage from '@/views/community/community-page.vue'
 import detailPage from '@/views/detail/detail-page.vue'
 import detailSeat from '@/views/detail/components/detail-seat.vue'
 import detailSession from '@/views/detail/components/detail-session.vue'
+import detailPay from '@/views/detail/components/detail-pay.vue'
+import detailTicket from '@/views/detail/components/detail-ticket.vue'
 const routes = [
   {
     path: '/', component: HomeView, children: [
@@ -30,6 +32,8 @@ const routes = [
     path: '/detail', component: detailPage, children: [
       { path: '', component: detailSession },
       { path: 'seat', component: detailSeat },
+      { path: 'pay', component: detailPay },
+      { path: 'ticket', component: detailTicket },
     ]
   }
 ]
