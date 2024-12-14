@@ -3,7 +3,7 @@
     <div class="left">
       <n-image
         :width="width"
-        :src="props.imageSrc"
+        :src="`/src/assets/电影/${props.imageSrc}.webp`"
         alt="Movie Image"
         loading="lazy"
       />
@@ -33,7 +33,6 @@ const props = defineProps({
   imageSrc: {
     type: String,
     required: true,
-    default: "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
   },
   isRate: {
     type: Boolean,

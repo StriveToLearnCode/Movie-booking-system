@@ -36,8 +36,11 @@ import { ref } from "vue";
 import { reqMovieList } from "@/api/movie";
 const router = useRouter();
 const movieList = ref([]);
-const toDetail = () => {
-  router.push("/detail");
+const toDetail = (id) => {
+  router.push({
+    path: "/detail",
+    query: { id }, // 将 id 作为查询参数传递
+  });
 };
 const getMovieList = async () => {
   const res = await reqMovieList();

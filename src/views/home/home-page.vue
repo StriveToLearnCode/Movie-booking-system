@@ -9,35 +9,35 @@
     </div>
     <div class="search">
       <div class="top">
-        <n-input v-model:value="value" type="text" placeholder="搜索" />
+        <n-input
+          v-model:value="value"
+          type="text"
+          placeholder="搜索"
+          @change="searchMovie"
+        />
       </div>
       <div class="bottom">
         <div class="item">
           <div class="title">流行电影</div>
-          <movieCard>
-            <template #name>John Wick</template>
-            <template #cate>Action,Horror</template>
-            <template #score>8.5</template>
+          <movieCard
+            v-for="item in HotMovieList"
+            :key="item.id"
+            :image-src="item.movie_cn_name"
+            v-if="searchArr.length === 0"
+          >
+            <template #name>{{ item.movie_cn_name }}</template>
+            <template #cate>{{ item.movie_cate }}</template>
+            <template #score>{{ item.movie_hot }}</template>
           </movieCard>
-          <movieCard>
-            <template #name>John Wick</template>
-            <template #cate>Action,Horror</template>
-            <template #score>8.5</template>
-          </movieCard>
-          <movieCard>
-            <template #name>John Wick</template>
-            <template #cate>Action,Horror</template>
-            <template #score>8.5</template>
-          </movieCard>
-          <movieCard>
-            <template #name>John Wick</template>
-            <template #cate>Action,Horror</template>
-            <template #score>8.5</template>
-          </movieCard>
-          <movieCard>
-            <template #name>John Wick</template>
-            <template #cate>Action,Horror</template>
-            <template #score>8.5</template>
+          <movieCard
+            v-for="(item, index) in searchArr"
+            :key="index"
+            :image-src="item.movie_cn_name"
+            v-else
+          >
+            <template #name>{{ item.movie_cn_name }}</template>
+            <template #cate>{{ item.movie_cate }}</template>
+            <template #score>{{ item.movie_hot }}</template>
           </movieCard>
         </div>
       </div>
@@ -48,8 +48,28 @@
 import { NInput } from "naive-ui";
 import movieCard from "@/components/movie-card.vue";
 import homeSider from "./components/home-sider.vue";
+import { reqMovieList } from "@/api/movie";
 import { ref } from "vue";
+const HotMovieList = ref([]);
+const movieList = ref([]);
 const value = ref("");
+const searchArr = ref([]);
+const getMovieList = async () => {
+  const res = await reqMovieList();
+  movieList.value = res.data;
+  res.data.sort((a, b) => b.movie_hot - a.movie_hot);
+  HotMovieList.value = res.data.slice(0, 5);
+};
+getMovieList();
+const searchMovie = () => {
+  const arr = [];
+  movieList.value.forEach((item) => {
+    if (item.movie_cn_name.includes(value.value)) {
+      arr.push(item);
+    }
+    searchArr.value = arr;
+  });
+};
 </script>
 <style scoped lang="scss">
 .container {

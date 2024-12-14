@@ -5,26 +5,24 @@
         <n-image
           width="200"
           height="300"
-          src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
+          :src="`/src/assets/电影/${movie.movie_cn_name}.webp`"
         />
       </div>
       <div class="center">
-        <div class="title">大话西游之大圣归来</div>
+        <div class="title">{{ movie.movie_cn_name }}</div>
         <div class="en-title">
-          The Great Sage of Journey to the West has returned
+          {{ movie.movie_en_name }}
         </div>
         <div class="cate">
-          <span>动作</span>
-          <span>剧情</span>
-          <span>爱情</span>
+          <span>{{ movie.movie_cate }}</span>
         </div>
         <div class="area">
-          <span>中国大陆</span>
-          <span>/105分钟</span>
+          <span>{{ movie.movie_address }}</span>
+          <span>/{{ movie.movie_duration }}分钟</span>
         </div>
         <div class="time">
-          <span>2022-12-12</span>
-          <span>19:00中国大陆上映</span>
+          <span>{{ movie.movie_time }}</span>
+          <span>{{ movie.movie_address }}上映</span>
         </div>
         <div class="btn">
           <div class="btn-top">
@@ -228,10 +226,26 @@
 </template>
 <script setup>
 import { NCard, NImage, NButton, NRate, NModal, NInput } from "naive-ui";
-import { useRouter } from "vue-router";
-import { ref } from "vue";
-const router = useRouter();
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { reqMovieList } from "@/api/movie";
+const route = useRoute();
+const movieId = ref(null);
 const showModal = ref(false);
+const movie = ref({});
+onMounted(() => {
+  movieId.value = route.query.id; // 获取传递的 id
+  console.log("Received movie id:", movieId.value);
+  getMovieList();
+});
+const getMovieList = async () => {
+  const res = await reqMovieList();
+  res.data.find((item) => {
+    if (item.id == movieId.value) {
+      movie.value = item;
+    }
+  });
+};
 const toSeat = () => {
   router.push("/detail/seat");
 };
