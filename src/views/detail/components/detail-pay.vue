@@ -17,28 +17,70 @@
       <div>座位</div>
     </div>
     <div class="content">
-      <div>《大话西游》</div>
-      <div style="color: #f16e68">明天12月12日 11:45</div>
-      <div>万达影院</div>
-      <div>3号厅 2排 2座</div>
+      <div>{{ movie[0]?.movie_cn_name }}</div>
+      <div style="color: #f16e68">{{ query.date }}</div>
+      <div>{{ cinema[0]?.cinema_name }}</div>
+      <div class="seat">
+        <span v-for="(item, index) in seats" :key="index">{{
+          item.row + "排" + item.seat + "号"
+        }}</span>
+      </div>
     </div>
   </div>
   <div class="pay">
     <div class="top">
       <span>实际支付：</span
-      ><span style="color: #f16e68; font-size: 30px">¥100</span>
+      ><span style="color: #f16e68; font-size: 30px"
+        >¥{{ movie[0]?.movie_price * seats.length }}</span
+      >
     </div>
     <n-button class="btn" color="#f03d37" @click="toTicket">确认支付</n-button>
   </div>
 </template>
 <script setup>
 import { NCard, NCountdown, NButton } from "naive-ui";
-import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { onMounted, ref } from "vue";
+import { reqMovieList } from "@/api/movie";
+import { reqCinemaList } from "@/api/cinema";
+const movie = ref({});
+const cinema = ref({});
+const route = useRoute();
+const query = route.query;
+const seats = ref([]);
+onMounted(() => {
+  getMovieList();
+  getCinemaList();
+  convertSeats();
+});
+const getMovieList = async () => {
+  const res = await reqMovieList();
+  movie.value = res.data.filter((item) => item.id == query.movieId);
+};
+const getCinemaList = async () => {
+  const res = await reqCinemaList();
+  cinema.value = res.data.filter((item) => item.id == query.cinemaId);
+};
+const convertSeats = () => {
+  const seatArr = JSON.parse(query?.isChoosedSeats);
+  console.log(seatArr);
+  seatArr.forEach((item) => {
+    seats.value.push({
+      row: item.rowIndex + 1,
+      seat: item.seatIndex + 1,
+    });
+  });
+};
 const router = useRouter();
 const active = ref(true);
 const toTicket = () => {
-  router.push("/detail/ticket");
+  router.push({
+    path: "/detail/ticket",
+    query: {
+      ...query,
+      isChoosedSeats: JSON.stringify(seats.value),
+    },
+  });
 };
 </script>
 <style scoped lang="scss">
@@ -73,6 +115,11 @@ const toTicket = () => {
     display: flex;
     justify-content: space-around;
     padding: 15px 10px;
+    .seat {
+      span {
+        margin-right: 5px;
+      }
+    }
   }
 }
 .pay {

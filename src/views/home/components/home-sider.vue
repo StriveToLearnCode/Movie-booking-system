@@ -2,7 +2,9 @@
   <div>
     <div class="sider">
       <div class="title">
-        <span>LOGO</span>
+        <a href="#/">
+          <img src="@/assets/logo.jpg" alt="" />
+        </a>
       </div>
       <n-anchor :show-rail="showRail">
         <n-anchor-link title="菜单">
@@ -38,6 +40,10 @@ const showRail = ref(false);
     justify-content: center;
     align-items: center;
     height: 50px;
+    img {
+      max-width: 180px;
+      height: auto;
+    }
   }
   .n-anchor {
     height: 100%;

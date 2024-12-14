@@ -142,10 +142,11 @@
 <script setup>
 import { NCard, NImage, NButton, NRate, NModal, NInput } from "naive-ui";
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { reqMovieList } from "@/api/movie";
 import { reqCinemaList } from "@/api/cinema";
 const route = useRoute();
+const router = useRouter();
 const movieId = ref(null);
 const showModal = ref(false);
 const movie = ref({});
@@ -155,6 +156,7 @@ const isSelectedTime = ref(0);
 const cinemaList = ref([]);
 const isSelectedCinema = ref(1);
 const isSelectedAdress = ref(1);
+const selectedInfos = ref({});
 onMounted(() => {
   movieId.value = route.query.id;
   console.log("Received movie id:", movieId.value);
@@ -197,7 +199,16 @@ const chooseAdress = (id) => {
   isSelectedAdress.value = id;
 };
 const toSeat = () => {
-  router.push("/detail/seat");
+  selectedInfos.value = {
+    movieId: movieId.value,
+    cinemaId: isSelectedCinema.value,
+    date: timeArr.value[isSelectedTime.value],
+    addressId: isSelectedAdress.value,
+  };
+  router.push({
+    path: "/detail/seat",
+    query: selectedInfos.value,
+  });
 };
 const toComment = () => {
   showModal.value = true;

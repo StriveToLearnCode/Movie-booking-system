@@ -14,12 +14,21 @@
         </div>
         <div class="seat-area">
           <div
-            class="seats"
-            v-for="(seat, index) in seats"
-            :key="index"
-            @click="chooseSeat(index)"
+            v-for="(row, rowIndex) in seats"
+            :key="rowIndex"
+            class="seat-row"
           >
-            <img :src="seat.img" alt="Seat" />
+            <div class="row-number">{{ rowIndex + 1 }}</div>
+            <!-- Row Number -->
+            <div
+              v-for="(seat, seatIndex) in row"
+              :key="seatIndex"
+              class="seats"
+              :class="{ chosen: seat.selected, sealed: seat.sealed }"
+              @click="chooseSeat(rowIndex, seatIndex)"
+            >
+              <img :src="seat.img" alt="Seat" />
+            </div>
           </div>
         </div>
         <div class="btn">
@@ -32,17 +41,23 @@
 
 <script setup>
 import { NCard, NButton } from "naive-ui";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import seatChoosed from "@/assets/seat-choosed.png";
 import seat from "@/assets/seat.png";
 import seatSealed from "@/assets/seat-sealed.png";
 import { ref } from "vue";
 
 const router = useRouter();
+const route = useRoute();
 
-const goPay = () => {
-  router.push("/detail/pay");
-};
+const seats = ref(
+  Array.from({ length: 6 }, (_, rowIndex) => {
+    return Array.from({ length: 10 }, (_, seatIndex) => ({
+      img: seat,
+      selected: false,
+    }));
+  })
+);
 
 const seatInfos = [
   { img: seat, label: "可选座位", alt: "可选座位" },
@@ -50,10 +65,42 @@ const seatInfos = [
   { img: seatChoosed, label: "已选座位", alt: "已选座位" },
 ];
 
-const seats = ref(Array.from({ length: 60 }, () => ({ img: seat })));
+const goPay = () => {
+  const isChoosedSeats = [];
+  seats.value.forEach((row, rowIndex) => {
+    row.forEach((seat, seatIndex) => {
+      if (seat.selected) {
+        isChoosedSeats.push({ rowIndex, seatIndex });
+      }
+    });
+  });
 
-const chooseSeat = (index) => {
-  seats.value[index].img = seatChoosed;
+  if (isChoosedSeats.length === 0) {
+    alert("请选择座位");
+    return;
+  }
+  const query = {
+    ...route.query,
+    isChoosedSeats: JSON.stringify(isChoosedSeats),
+  };
+  console.log(query);
+
+  router.push({
+    path: "/detail/pay",
+    query,
+  });
+};
+
+const chooseSeat = (rowIndex, seatIndex) => {
+  if (seats.value[rowIndex][seatIndex].sealed) return;
+
+  if (seats.value[rowIndex][seatIndex].selected) {
+    seats.value[rowIndex][seatIndex].img = seat;
+    seats.value[rowIndex][seatIndex].selected = false;
+  } else {
+    seats.value[rowIndex][seatIndex].img = seatChoosed;
+    seats.value[rowIndex][seatIndex].selected = true;
+  }
 };
 </script>
 
@@ -87,14 +134,31 @@ const chooseSeat = (index) => {
   }
   .seat-area {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
     margin-top: 20px;
-    flex-wrap: wrap;
-    width: 60%;
-    justify-content: center;
   }
   .btn {
     margin-top: 20px;
+  }
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  .row-number {
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+  }
+}
+
+.seats {
+  cursor: pointer;
+  img {
+    width: 30px;
+    height: 30px;
   }
 }
 </style>

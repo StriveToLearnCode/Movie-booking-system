@@ -15,6 +15,8 @@ import detailSeat from '@/views/detail/components/detail-seat.vue'
 import detailSession from '@/views/detail/components/detail-session.vue'
 import detailPay from '@/views/detail/components/detail-pay.vue'
 import detailTicket from '@/views/detail/components/detail-ticket.vue'
+// login
+import loginPage from '@/views/login/login-page.vue'
 const routes = [
   {
     path: '/', component: HomeView, children: [
@@ -35,6 +37,9 @@ const routes = [
       { path: 'pay', component: detailPay },
       { path: 'ticket', component: detailTicket },
     ]
+  },
+  {
+    path: '/login', component: loginPage
   }
 ]
 
