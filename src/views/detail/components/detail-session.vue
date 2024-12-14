@@ -37,7 +37,7 @@
       <div class="right">
         <div class="rate">
           <div>评分</div>
-          <n-rate readonly :default-value="4.5" />
+          <n-rate readonly v-model:value="rate" />
         </div>
         <div class="ticket">
           <div>累计票房</div>
@@ -51,11 +51,14 @@
           <li class="date-item">
             <div class="date-title">日期:</div>
             <ul class="date-list">
-              <li class="active">今天12月11</li>
-              <li>明天12月12</li>
-              <li>后天12月13</li>
-              <li>周六12月14</li>
-              <li>周日12月15</li>
+              <li
+                v-for="(item, index) in timeArr"
+                :class="index === isSelectedTime ? 'active' : ''"
+                :key="index"
+                @click="chooseDate(index)"
+              >
+                {{ item }}
+              </li>
             </ul>
           </li>
         </ul>
@@ -63,14 +66,14 @@
           <li class="date-item">
             <div class="date-title">品牌:</div>
             <ul class="date-list">
-              <li class="active">全部</li>
-              <li>万达影院</li>
-              <li>大地影院</li>
-              <li>金逸影城</li>
-              <li>星光影城</li>
-              <li>完美世界影城</li>
-              <li>华谊兄弟</li>
-              <li>其他</li>
+              <li
+                :class="item.id === isSelectedCinema ? 'active' : ''"
+                v-for="item in cinemaList"
+                :key="item.id"
+                @click="chooseCinema(item.id)"
+              >
+                {{ item.cinema_name }}
+              </li>
             </ul>
           </li>
         </ul>
@@ -78,17 +81,14 @@
           <li class="date-item">
             <div class="date-title">行政区:</div>
             <ul class="date-list">
-              <li class="active">全部</li>
-              <li>地铁附近</li>
-              <li>思明区</li>
-              <li>大田区</li>
-              <li>杏林区</li>
-              <li>集美区</li>
-              <li>同安区</li>
-              <li>龙华区</li>
-              <li>翔安区</li>
-              <li>丰泽区</li>
-              <li>其他</li>
+              <li
+                :class="item.id === isSelectedAdress ? 'active' : ''"
+                v-for="item in cinemaList"
+                :key="item.id"
+                @click="chooseAdress(item.id)"
+              >
+                {{ item.cinema_address }}
+              </li>
             </ul>
           </li>
         </ul>
@@ -99,104 +99,19 @@
           <span>影院列表</span>
         </div>
         <div class="list">
-          <div class="item">
+          <div class="item" v-for="item in cinemaList" :key="item.id">
             <div class="left">
-              <div class="name">万达影院</div>
+              <div class="name">{{ item.cinema_name }}</div>
               <div class="address">
                 <span>地址:</span>
-                思明区思明路万达广场
+                {{ item.cinema_specific_address }}
               </div>
             </div>
             <div class="right">
               <div class="info">
-                <div class="price">¥30</div>
+                <div class="price">¥{{ movie.movie_price }}</div>
                 <div class="btn">
                   <n-button @click="toSeat">选座购票</n-button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="left">
-              <div class="name">万达影院</div>
-              <div class="address">
-                <span>地址:</span>
-                思明区思明路万达广场
-              </div>
-            </div>
-            <div class="right">
-              <div class="info">
-                <div class="price">¥30</div>
-                <div class="btn">
-                  <n-button>选座购票</n-button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="left">
-              <div class="name">万达影院</div>
-              <div class="address">
-                <span>地址:</span>
-                思明区思明路万达广场
-              </div>
-            </div>
-            <div class="right">
-              <div class="info">
-                <div class="price">¥30</div>
-                <div class="btn">
-                  <n-button>选座购票</n-button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="left">
-              <div class="name">万达影院</div>
-              <div class="address">
-                <span>地址:</span>
-                思明区思明路万达广场
-              </div>
-            </div>
-            <div class="right">
-              <div class="info">
-                <div class="price">¥30</div>
-                <div class="btn">
-                  <n-button>选座购票</n-button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="left">
-              <div class="name">万达影院</div>
-              <div class="address">
-                <span>地址:</span>
-                思明区思明路万达广场
-              </div>
-            </div>
-            <div class="right">
-              <div class="info">
-                <div class="price">¥30</div>
-                <div class="btn">
-                  <n-button>选座购票</n-button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="left">
-              <div class="name">万达影院</div>
-              <div class="address">
-                <span>地址:</span>
-                思明区思明路万达广场
-              </div>
-            </div>
-            <div class="right">
-              <div class="info">
-                <div class="price">¥30</div>
-                <div class="btn">
-                  <n-button>选座购票</n-button>
                 </div>
               </div>
             </div>
@@ -229,22 +144,57 @@ import { NCard, NImage, NButton, NRate, NModal, NInput } from "naive-ui";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { reqMovieList } from "@/api/movie";
+import { reqCinemaList } from "@/api/cinema";
 const route = useRoute();
 const movieId = ref(null);
 const showModal = ref(false);
 const movie = ref({});
+const rate = ref();
+const timeArr = ref([]);
+const isSelectedTime = ref(0);
+const cinemaList = ref([]);
+const isSelectedCinema = ref(1);
+const isSelectedAdress = ref(1);
 onMounted(() => {
-  movieId.value = route.query.id; // 获取传递的 id
+  movieId.value = route.query.id;
   console.log("Received movie id:", movieId.value);
   getMovieList();
+  getCinemaList();
+  getDate();
 });
 const getMovieList = async () => {
   const res = await reqMovieList();
   res.data.find((item) => {
     if (item.id == movieId.value) {
       movie.value = item;
+      rate.value = Number(item.movie_rate);
+      console.log(rate.value);
     }
   });
+};
+const getCinemaList = async () => {
+  const res = await reqCinemaList();
+  cinemaList.value = res.data;
+  console.log(cinemaList.value);
+};
+const getDate = () => {
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  console.log(month, day);
+  for (let i = 0; i < 5; i++) {
+    const time = `${month}月${day + i}日`;
+    timeArr.value.push(time);
+  }
+};
+const chooseDate = (index) => {
+  isSelectedTime.value = index;
+};
+const chooseCinema = (id) => {
+  isSelectedCinema.value = id;
+};
+const chooseAdress = (id) => {
+  isSelectedAdress.value = id;
 };
 const toSeat = () => {
   router.push("/detail/seat");
@@ -394,5 +344,8 @@ const cancelCallback = () => {
     justify-content: center;
     gap: 30px;
   }
+}
+ul > li {
+  cursor: pointer;
 }
 </style>
