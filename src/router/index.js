@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 // home
 import HomeView from '@/views/home/home-page.vue'
 import homeContentView from '@/views/home/components/home-content.vue'
@@ -44,7 +44,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 })
 export default router

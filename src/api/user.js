@@ -15,3 +15,4 @@ export const reqRegister = (data) => {
     data,
   });
 }
+

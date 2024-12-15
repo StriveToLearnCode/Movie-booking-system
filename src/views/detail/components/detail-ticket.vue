@@ -7,10 +7,17 @@
 </template>
 <script setup>
 import { NResult, NButton } from "naive-ui";
-import { useRouter } from "vue-router";
-
+import { useRouter, useRoute } from "vue-router";
+import { reqAddOrder } from "@/api/order";
 const router = useRouter();
-const goHome = () => {
+const query = useRoute().query;
+const goHome = async () => {
+  const res = await reqAddOrder({
+    newOrderItem: query,
+  });
+
+  console.log(res);
+  if (res.status !== 200) return;
   router.push("/");
 };
 </script>

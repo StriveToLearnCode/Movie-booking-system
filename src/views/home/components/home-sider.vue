@@ -8,18 +8,18 @@
       </div>
       <n-anchor :show-rail="showRail">
         <n-anchor-link title="菜单">
-          <n-anchor-link title="首页" href="#/" />
-          <n-anchor-link title="票房排名" href="#/discovery" />
-          <n-anchor-link title="社区" href="#/community" />
-          <n-anchor-link title="即将上映" href="#/coming" />
+          <n-anchor-link title="首页" href="/" />
+          <n-anchor-link title="票房排名" href="/discovery" />
+          <n-anchor-link title="社区" href="/community" />
+          <n-anchor-link title="即将上映" href="/coming" />
         </n-anchor-link>
         <n-anchor-link title="社交">
-          <n-anchor-link title="我的好友" href="#/friends" />
-          <n-anchor-link title="聚会" href="#/parties" />
-          <n-anchor-link title="媒体" href="#/media" />
+          <n-anchor-link title="我的好友" href="/friends" />
+          <n-anchor-link title="聚会" href="/parties" />
+          <n-anchor-link title="媒体" href="/media" />
         </n-anchor-link>
         <n-anchor-link title="全局">
-          <n-anchor-link title="个人中心" href="#/setting" />
+          <n-anchor-link title="个人中心" href="/setting" />
         </n-anchor-link>
       </n-anchor>
     </div>
