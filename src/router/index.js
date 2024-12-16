@@ -17,6 +17,14 @@ import detailPay from '@/views/detail/components/detail-pay.vue'
 import detailTicket from '@/views/detail/components/detail-ticket.vue'
 // login
 import loginPage from '@/views/login/login-page.vue'
+// stytem
+import systemPage from '@/views/system/system-page.vue'
+import systemOverall from '@/views/system/components/system-overall.vue'
+import systemRootmanagement from '@/views/system/components/system-rootmanagement.vue'
+import systemUserlist from '@/views/system/components/system-userlist.vue'
+import systemOrdermanagement from '@/views/system/components/system-ordermanagement.vue'
+import systemFilmlist from '@/views/system/components/system-filmlist.vue'
+import systemCinemaList from '@/views/system/components/system-cinemalist.vue'
 const routes = [
   {
     path: '/', component: HomeView, children: [
@@ -40,6 +48,16 @@ const routes = [
   },
   {
     path: '/login', component: loginPage
+  },
+  {
+    path: '/system', component: systemPage, children: [
+      { path: '', component: systemOverall },
+      { path: 'rootmanagement', component: systemRootmanagement },
+      { path: 'userlist', component: systemUserlist },
+      { path: 'ordermanagement', component: systemOrdermanagement },
+      { path: 'filmlist', component: systemFilmlist },
+      { path: 'cinemaList', component: systemCinemaList },
+    ]
   }
 ]
 
