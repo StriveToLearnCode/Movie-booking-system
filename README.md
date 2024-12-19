@@ -71,11 +71,9 @@
    启动后，通常可以通过 `http://localhost:3000` 或 `http://localhost:5173` 访问前端应用。
 
 4. **后端（可选）**：
-   如果你使用了后端，确保设置好后端部分（通常在一个单独的文件夹中）。通常，你需要设置 数据库并运行：
+   如果你使用了后端，确保设置好后端部分（通常在一个单独的文件夹中）。通常，你需要设置数据库并运行：
    ```bash
-  nodemon app.js
-  ```
-
+   nodemon app.js
    ```
 
 ---
@@ -105,7 +103,7 @@ src/
 ├── components/            # 可复用组件（如 MovieCard、SeatSelector）
 ├── views/                 # 页面组件（如 HomePage、MovieDetail）
 ├── router/                # Vue Router 配置
-├── store/                 # Vuex 状态管理
+├── store/                 # Pinia 状态管理
 ├── styles/                # 全局样式（如 CSS、SCSS）
 └── App.vue                # 根组件
 └── main.js                # Vue 应用初始化
@@ -163,4 +161,3 @@ src/
 ## 许可证
 
 本项目采用 **MIT 许可证**，详情请参见 [LICENSE](LICENSE) 文件。
-
