@@ -7,7 +7,7 @@
         </div>
         <div class="tab">
           <div class="newShow">
-            <span>> {{ now }}</span>
+            <span> > {{ now }}</span>
           </div>
           <div class="avatar">
             <div>{{ username }}</div>
@@ -40,10 +40,6 @@ const router = useRouter();
 const username = ref("");
 const menuOptions = [
   {
-    label: "全局",
-    key: "overall",
-  },
-  {
     label: "影视管理",
     key: "FilmManagement",
     children: [
@@ -63,10 +59,10 @@ const menuOptions = [
       },
     ],
   },
-  {
-    label: "订单管理",
-    key: "OrderManagement",
-  },
+  // {
+  //   label: "订单管理",
+  //   key: "OrderManagement",
+  // },
   {
     label: "用户管理",
     key: "UserManagement",
@@ -94,22 +90,23 @@ const getUserInfo = async () => {
   const res = await reqUserInfo();
   username.value = res.data.data.username;
 };
-const now = ref("overall");
+const now = ref("filmList");
 const onMenuClick = (key) => {
   now.value = key;
+  console.log(key);
+
   if (key === "exit") {
     router.push("/");
   } else if (key === "RootManagement") {
     router.push("/system/rootmanagement");
   } else if (key === "UserList") {
     router.push("/system/userlist");
-  } else if (key === "FilmList") {
-    router.push("/system/filmlist");
   } else if (key === "CinemaList") {
     router.push("/system/cinemaList");
-  } else if (key === "OrderManagement") {
-    router.push("/system/ordermanagement");
-  } else if (key === "overall") {
+    // } else if (key === "OrderManagement") {
+    //   router.push("/system/ordermanagement");
+    // }
+  } else if (key === "FilmList") {
     router.push("/system");
   }
 };

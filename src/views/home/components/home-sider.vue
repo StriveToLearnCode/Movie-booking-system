@@ -24,7 +24,7 @@
         </n-anchor-link>
       </n-anchor>
       <div class="layout">
-        <NButton @click="logout">退出登录</NButton>
+        <NButton @click="logout" v-if="token">退出登录</NButton>
       </div>
     </div>
   </div>
@@ -36,6 +36,7 @@ import { reqUserInfo } from "@/api/userInfo";
 import { useRouter } from "vue-router";
 const showRail = ref(false);
 const router = useRouter();
+const token = localStorage.getItem("token");
 const isAdmin = async () => {
   const res = await reqUserInfo();
   console.log(res.data.data.is_admin);

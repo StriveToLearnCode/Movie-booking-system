@@ -19,10 +19,9 @@ import detailTicket from '@/views/detail/components/detail-ticket.vue'
 import loginPage from '@/views/login/login-page.vue'
 // stytem
 import systemPage from '@/views/system/system-page.vue'
-import systemOverall from '@/views/system/components/system-overall.vue'
 import systemRootmanagement from '@/views/system/components/system-rootmanagement.vue'
 import systemUserlist from '@/views/system/components/system-userlist.vue'
-import systemOrdermanagement from '@/views/system/components/system-ordermanagement.vue'
+// import systemOrdermanagement from '@/views/system/components/system-ordermanagement.vue'
 import systemFilmlist from '@/views/system/components/system-filmlist.vue'
 import systemCinemaList from '@/views/system/components/system-cinemalist.vue'
 const routes = [
@@ -51,11 +50,10 @@ const routes = [
   },
   {
     path: '/system', component: systemPage, children: [
-      { path: '', component: systemOverall },
+      { path: '', component: systemFilmlist },
       { path: 'rootmanagement', component: systemRootmanagement },
       { path: 'userlist', component: systemUserlist },
-      { path: 'ordermanagement', component: systemOrdermanagement },
-      { path: 'filmlist', component: systemFilmlist },
+      // { path: 'ordermanagement', component: systemOrdermanagement },
       { path: 'cinemaList', component: systemCinemaList },
     ]
   }
